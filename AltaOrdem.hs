@@ -57,7 +57,10 @@ dropWhile' p (x:xs) | p x = dropWhile' p xs
                     | otherwise = x : dropWhile' p xs
 
 -- Questao 7
+map' :: Foldable t1 => (t2 -> a) -> t1 t2 -> [a]
 map' f = foldr (\x xs -> f x : xs) []
+
+filter' :: Foldable t => (a -> Bool) -> t a -> [a]
 filter' f = foldr (\x xs -> if f x then x : xs else xs) []
 
 -- Questao 8
@@ -65,10 +68,22 @@ dec2int :: [Int] -> Int
 dec2int = foldl (\x y -> 10 * x + y) 0
 
 -- Questao 9
-unfold p h t x 
+unfold :: (t -> Bool) -> (t -> a) -> (t -> t) -> t -> [a]
+unfold p h t x
        | p x = []
        | otherwise = h x : unfold p h t (t x)
 
+int2bin :: Integer -> [Integer]
 int2bin = unfold (== 0) (`mod` 2) (`div` 2)
 
-map'' p (x:xs) = unfold p x 
+map'' :: (b -> a) -> [b] -> [a]
+map'' p = unfold null (p . head) tail
+
+iterate' :: (a -> a) -> a -> [a]
+iterate' = unfold (const False) id
+
+-- Questao 10
+altMap :: (a -> b) -> (a -> b) -> [a] -> [b]
+altMap _ _ [] = []
+altMap p _ [x] = [p x]
+altMap p f (x:y:xs) = p x : f y : altMap p f xs
