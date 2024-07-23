@@ -57,7 +57,7 @@ avaliar (Val a) = a
 avaliar (Add x y) = avaliar x + avaliar y
 
 -- Questao 6
-data Expr = Val Int | Op Expr Expr
+data Expr = Val2 Int | Op2 Expr Expr
 
 folde :: (Int -> a) -> (a -> a -> a) -> Expr -> a
 folde f _ (Val2 i) = f i
